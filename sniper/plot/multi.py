@@ -77,6 +77,7 @@ class M(Plot):
     def __store_data(self):
         for data_name in self.data_names:
             kline_data = self.__data[data_name][:]
+            # print('kline_data:', kline_data)
             kline_data.date = pd.to_datetime(kline_data.date)
             kline_data.set_index('date', inplace=True)
             kline_data.sort_index(inplace=True)

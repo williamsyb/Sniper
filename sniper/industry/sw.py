@@ -9,6 +9,7 @@ import sqlite3 as sql
 from loguru import logger
 from sniper.utils.expt import ModuleExt
 from sniper.utils import LazyFunc
+from sniper.env import DATE_FORMAT
 
 EMPTY_DF = pd.DataFrame()
 DB_NAME = 'calender'
@@ -35,7 +36,10 @@ class FileSystem:
         abs_path = os.path.join(self.__dir_name, file_name)
         logger.info(f'下载 {abs_path} ...')
         # print(df)
-        df.to_csv(abs_path, index=False, mode=mode)
+        header = True
+        if mode == 'a':
+            header = False
+        df.to_csv(abs_path, index=False, mode=mode, header=header)
 
     def read_csv(self, file_name_or_code):
         file_name_or_code = str(file_name_or_code)
@@ -73,7 +77,7 @@ class DbSystem:
 
 
 class Calender:
-    today = dt.now().strftime('%Y-%m-%d')
+    today = dt.now().strftime(DATE_FORMAT)
 
     def __init__(self, base, name):
         self.sw_dates = self.__get_dates()
@@ -97,8 +101,10 @@ class Calender:
         return list(diff)
 
     def make_up(self, dates: list):
+        if not Utils.is_empty(dates):
+            dates = [date.strftime(DATE_FORMAT) for date in dates]
         df = pd.DataFrame()
-        df['trade_date'] = list(dates)
+        df['trade_date'] = dates
         self.__db.to_sql(df, DB_NAME)
 
     def get_periods(self, start, end):
@@ -108,7 +114,7 @@ class Calender:
 
 class SWManager:
     file_name = '{code}_{name}.csv'
-    today = dt.now().strftime('%Y-%m-%d')
+    today = dt.now().strftime(DATE_FORMAT)
 
     def __init__(self, start, end, work_path=r'D:\William\notebooks\sniper\data'):
         self.start = start  # 2010-01-01
@@ -153,7 +159,7 @@ class SWManager:
                 for date in self.__missing_dates:
                     logger.warning(f"缺失 {date}, 补充下载...")
                     df = ak.sw_index_daily(index_code=code, start_date=date, end_date=date)
-                    self.__io.to_csv(df, file_name)
+                    self.__io.to_csv(df, file_name, mode='a')
         self.calender.make_up(self.__missing_dates)
         self.__missing_dates = []
 
@@ -187,6 +193,7 @@ class SWManager:
 
 if __name__ == '__main__':
     sw_manager = SWManager('2010-01-01', SWManager.today)
+    # sw_manager = SWManager('2010-01-01', '2020-12-31')
     sw_manager.initialize()
     # sw_manager.download_history()
     sw_manager.download_daily()
