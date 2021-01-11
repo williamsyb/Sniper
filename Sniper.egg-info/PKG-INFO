@@ -1,0 +1,18 @@
+Metadata-Version: 2.1
+Name: Sniper
+Version: 0.0.1
+Summary: Mutual fund analysis
+Home-page: UNKNOWN
+Author: sunyibin
+Author-email: william_sun1990@hotmail.com
+License: UNKNOWN
+Description: UNKNOWN
+Platform: UNKNOWN
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: Topic :: Software Development :: Build Tools
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Operating System :: OS Independent
+Description-Content-Type: text/markdown
