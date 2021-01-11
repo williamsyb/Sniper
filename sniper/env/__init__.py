@@ -1,4 +1,7 @@
 import pandas as pd
+import os
+
+DATA_PATH = os.path.expanduser('~')
 
 g_plt_figsize = (14, 7)
 

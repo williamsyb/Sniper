@@ -14,6 +14,7 @@ from loguru import logger
 
 class CSIndex:
     today = dt.now().strftime(DATE_FORMAT)
+
     def __init__(self, interval=0.5, to_update=False, work_path=''):
         self.__total_page = 0
         self.__init_page = 1
@@ -33,21 +34,24 @@ class CSIndex:
         return self.__category
 
     def start(self):
-        if os.path.exists(self.__category_local_path) and not self.__to_update:
-            self.__category = self.__io.read_csv(self.__category_local_path)
-            return
-        while self.__total_page ==0 or self.__cur_page<=self.__total_page:
+        if not self.__to_update:
+            try:
+                self.__category = self.__io.read_csv(self.__category_local_path)
+                return
+            except:
+                pass
+        while self.__total_page == 0 or self.__cur_page <= self.__total_page:
             self.sleep()
             self.download_index_category()
-            self.__cur_page +=1
+            self.__cur_page += 1
         self.__cur_page = self.__init_page
         self.__io.to_csv(self.__category, self.__category_local_path)
 
     def download_index_category(self):
-        url = CS_INDEX_PAGE.format(page=self.__cur_page,order=parse.quote(self.__order))
+        url = CS_INDEX_PAGE.format(page=self.__cur_page, order=parse.quote(self.__order))
         res = requests.get(url).content
         res = json.loads(res)
-        if self.__total_page ==0:
+        if self.__total_page == 0:
             self.__total_page = res['total_page']
         df = pd.DataFrame(res['list'])
         try:
@@ -71,6 +75,10 @@ class CSIndex:
         :return:
         """
         pass
+
+    def load_index(self, index_code):
+        df = ak.stock_zh_index_hist_csindex(symbol=index_code)
+        return df
 
 
 if __name__ == '__main__':
