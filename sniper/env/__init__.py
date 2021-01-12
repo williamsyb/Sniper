@@ -12,3 +12,7 @@ DATE_FORMAT = '%Y-%m-%d'
 CS_INDEX = 'http://www.csindex.com.cn/zh-CN/indices/index'
 
 CS_INDEX_PAGE = 'http://www.csindex.com.cn/zh-CN/indices/index?page={page}&page_size=50&by=asc&order={order}&data_type=json'
+
+PRODUCT_URL = 'http://www.csindex.com.cn/zh-CN/indices/index-detail/{code}'
+
+PRODUCT_DETAIL_URL = 'http://www.csindex.com.cn/zh-CN/search/index-derivatives?index_name={}'

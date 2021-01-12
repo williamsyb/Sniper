@@ -5,11 +5,13 @@ import json
 import os
 from datetime import datetime as dt
 from urllib import parse
-from sniper.env import CS_INDEX_PAGE, EMPRY_DF, DATE_FORMAT
+from sniper.env import CS_INDEX_PAGE, EMPRY_DF, DATE_FORMAT, PRODUCT_URL,PRODUCT_DETAIL_URL
 from sniper.protocol.io import FileSystem
 import pandas as pd
 import time
 from loguru import logger
+from bs4 import BeautifulSoup
+from urllib import parse
 
 
 class CSIndex:
@@ -62,7 +64,7 @@ class CSIndex:
         except:
             return
 
-    def download_detail(self):
+    def download_detail(self,code):
         """
         举个例子：http://www.csindex.com.cn/zh-CN/indices/index-detail/000001
         都是以最后一个指数代码结尾
@@ -72,14 +74,45 @@ class CSIndex:
         3. 相关产品
         4. 十大持仓
         5. 行业权重分布
-        :return:
+        :return: 
         """
-        pass
+        url = PRODUCT_URL.format(code=code)
+        data=requests.get(url).content.decode('utf-8','ignore')
+        soup = BeautifulSoup(data,'lxml')
+        # 1. 获取指数简介
+        all_a = soup.find('div', class_='js_txt_new')
+        brief = all_a.text.replace('\n', '')
 
-    def load_index(self, index_code):
+        # 2. 获取相关产品
+        name = soup.find('h1', class_='d_title').text
+        url_more= PRODUCT_DETAIL_URL.format(parse.quote(name))
+        detail_data = requests.get(url_more).content.decode('utf-8','ignore')
+
+        soup_more = BeautifulSoup(detail_data,'lxml')
+        data_list = []  # 结构: [dict1, dict2, ...], dict结构{'船名': ship_name, '航次': voyage, '提单号': bill_num, '作业码头': wharf}
+        for idx, tr in enumerate(soup_more.find_all('tr')):
+            if idx != 0:
+                tds = tr.find_all('td')
+                data_list.append({
+                    '证券代码': tds[0].contents[0],
+                    '基金名称': tds[1].contents[0],
+                    '基金成立日': tds[2].contents[0],
+                    '基金类型': tds[3].contents[0],
+                    '产品类型': tds[4].contents[0],
+                    '标的指数': tds[5].contents[0],
+                    # '基金管理人': tds[7].contents[0],
+                })
+        df = pd.DataFrame(data_list)
+        # print(df)
+        return df
+
+    def load_index_price(self, index_code):
         df = ak.stock_zh_index_hist_csindex(symbol=index_code)
         return df
 
+    def load_fund_price(self, code):
+        df =ak.stock_zh_index_daily_em(symbol="sz399812")
+        return df
 
 if __name__ == '__main__':
     cs_index = CSIndex(interval=1)
