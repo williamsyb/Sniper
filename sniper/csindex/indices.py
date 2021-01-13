@@ -5,7 +5,7 @@ import json
 import os
 from datetime import datetime as dt
 from urllib import parse
-from sniper.env import CS_INDEX_PAGE, EMPRY_DF, DATE_FORMAT, PRODUCT_URL,PRODUCT_DETAIL_URL
+from sniper.env import CS_INDEX_PAGE, EMPRY_DF, DATE_FORMAT, PRODUCT_URL, PRODUCT_DETAIL_URL
 from sniper.protocol.io import FileSystem
 import pandas as pd
 import time
@@ -64,7 +64,7 @@ class CSIndex:
         except:
             return
 
-    def download_detail(self,code):
+    def download_detail(self, code):
         """
         举个例子：http://www.csindex.com.cn/zh-CN/indices/index-detail/000001
         都是以最后一个指数代码结尾
@@ -77,18 +77,18 @@ class CSIndex:
         :return: 
         """
         url = PRODUCT_URL.format(code=code)
-        data=requests.get(url).content.decode('utf-8','ignore')
-        soup = BeautifulSoup(data,'lxml')
+        data = requests.get(url).content.decode('utf-8', 'ignore')
+        soup = BeautifulSoup(data, 'lxml')
         # 1. 获取指数简介
         all_a = soup.find('div', class_='js_txt_new')
         brief = all_a.text.replace('\n', '')
 
         # 2. 获取相关产品
         name = soup.find('h1', class_='d_title').text
-        url_more= PRODUCT_DETAIL_URL.format(parse.quote(name))
-        detail_data = requests.get(url_more).content.decode('utf-8','ignore')
+        url_more = PRODUCT_DETAIL_URL.format(parse.quote(name))
+        detail_data = requests.get(url_more).content.decode('utf-8', 'ignore')
 
-        soup_more = BeautifulSoup(detail_data,'lxml')
+        soup_more = BeautifulSoup(detail_data, 'lxml')
         data_list = []  # 结构: [dict1, dict2, ...], dict结构{'船名': ship_name, '航次': voyage, '提单号': bill_num, '作业码头': wharf}
         for idx, tr in enumerate(soup_more.find_all('tr')):
             if idx != 0:
@@ -111,8 +111,9 @@ class CSIndex:
         return df
 
     def load_fund_price(self, code):
-        df =ak.stock_zh_index_daily_em(symbol="sz399812")
+        df = ak.stock_zh_index_daily_em(symbol="sz399812")
         return df
+
 
 if __name__ == '__main__':
     cs_index = CSIndex(interval=1)

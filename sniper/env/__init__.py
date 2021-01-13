@@ -16,3 +16,13 @@ CS_INDEX_PAGE = 'http://www.csindex.com.cn/zh-CN/indices/index?page={page}&page_
 PRODUCT_URL = 'http://www.csindex.com.cn/zh-CN/indices/index-detail/{code}'
 
 PRODUCT_DETAIL_URL = 'http://www.csindex.com.cn/zh-CN/search/index-derivatives?index_name={}'
+
+# type 1.静态市盈率  2.滚动市盈率   3. 市净率  4. 股息率
+# http://www.csindex.com.cn/zh-CN/downloads/industry-price-earnings-ratio?type=zjh1&date=2021-01-13
+INDUSTRY_ZJH = 'http://www.csindex.com.cn/zh-CN/downloads/industry-price-earnings-ratio?type=zjh{type_}&date={date}'
+
+# http://www.csindex.com.cn/zh-CN/downloads/industry-price-earnings-ratio?type=zz2&date=2021-01-13
+INDUSTRY_ZZ = 'http://www.csindex.com.cn/zh-CN/downloads/industry-price-earnings-ratio?type=zz{type_}&date={date}'
+
+# http://www.csindex.com.cn/zh-CN/downloads/industry-price-earnings-ratio?type=zy1&date=2021-01-13
+INDUSTRY_ZY = 'http://www.csindex.com.cn/zh-CN/downloads/industry-price-earnings-ratio?type=zy{type_}&date={date}'

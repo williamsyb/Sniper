@@ -12,7 +12,7 @@ setuptools.setup(
     # url="https://github.com/pypa/sampleproject",
     # packages=setuptools.find_packages(),   # 指定需要安装的模块
     packages=['sniper', 'sniper.industry', 'sniper.plot', 'sniper.utils',
-              'sniper.env', 'sniper.protocol', 'sniper.csindex'],
+              'sniper.env', 'sniper.protocol', 'sniper.csindex', 'sniper.index_finance'],
     # packages=find_packages(exclude=['contrib', 'docs', 'tests*']),
     # py_modules=["six"], # 剔除不属于包的单文件Python模块
     # install_requires=['peppercorn'], # 指定项目最低限度需要运行的依赖项
