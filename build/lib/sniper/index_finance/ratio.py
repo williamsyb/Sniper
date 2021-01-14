@@ -15,8 +15,8 @@ class Ratio:
     def start(self):
         for section_url, section_name in ((INDUSTRY_ZJH,'证监会分类'), (INDUSTRY_ZZ,'中证分类'), (INDUSTRY_ZY,'主要板块')):
             for ratio in RatioName:
-                date='2021-01-13'
-                url = section_url.format(type_=ratio.num, date=date)
+                
+                url = section_url.format(type_=ratio.num, date='2021-01-13')
                 self.download(url, ratio.chinese, section_name, date)
 
 
