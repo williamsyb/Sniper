@@ -1,5 +1,6 @@
 import sys
 import weakref
+import time
 
 
 class LazyFunc(object):
@@ -63,7 +64,15 @@ class Utils:
     def is_empty(li: list):
         return len(li) == 0
 
+
 def import_module(name):
     """Lazy impor _module"""
     __import__(name)
     return sys.modules[name]
+
+
+
+
+
+def sleep(interval):
+    time.sleep(interval)

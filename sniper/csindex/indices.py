@@ -111,6 +111,17 @@ class CSIndex:
         return df
 
     def load_fund_price(self, code):
+        """
+        历史行情数据-东方财富
+        目标地址: http://quote.eastmoney.com/center/hszs.html
+        描述: 东方财富股票指数数据, 历史数据按日频率更新
+        限量: 单次返回具体指数的所有历史行情数据
+        输入参数
+        名称	类型	必选	描述
+        symbol	str	Y	symbol="sz399552"
+        :param code:
+        :return:
+        """
         df = ak.stock_zh_index_daily_em(symbol="sz399812")
         return df
 

@@ -26,3 +26,5 @@ INDUSTRY_ZZ = 'http://www.csindex.com.cn/zh-CN/downloads/industry-price-earnings
 
 # http://www.csindex.com.cn/zh-CN/downloads/industry-price-earnings-ratio?type=zy1&date=2021-01-13
 INDUSTRY_ZY = 'http://www.csindex.com.cn/zh-CN/downloads/industry-price-earnings-ratio?type=zy{type_}&date={date}'
+
+
