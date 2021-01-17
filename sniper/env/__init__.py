@@ -1,5 +1,6 @@
 import pandas as pd
 import os
+from enum import Enum, unique
 
 DATA_PATH = os.path.expanduser('~')
 
@@ -28,3 +29,20 @@ INDUSTRY_ZZ = 'http://www.csindex.com.cn/zh-CN/downloads/industry-price-earnings
 INDUSTRY_ZY = 'http://www.csindex.com.cn/zh-CN/downloads/industry-price-earnings-ratio?type=zy{type_}&date={date}'
 
 
+<<<<<<< HEAD
+=======
+
+
+@unique  # @unique装饰器可以帮助我们检查保证没有重复值
+class RatioName(Enum):
+    def __new__(cls, chinese, num):
+        obj = object.__new__(cls)
+        obj.chinese = chinese
+        obj.num = num
+        return obj
+
+    STATIC_PE = '静态市盈率', 1
+    TTM_PE = '滚动市盈率', 2
+    PB = '市净率', 3
+    DIVIDEND_YIELD = '股息率', 4
+>>>>>>> f244fae5fdea0e99a9a177a8ab47f2868d80bacb
