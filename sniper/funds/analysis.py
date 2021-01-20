@@ -4,8 +4,9 @@ from datetime import datetime as dt
 import matplotlib.pyplot as plt
 import akshare as ak
 import time
+from typing import Union, List
 from loguru import logger
-
+from sniper.utils.expt import ModuleExt
 import talib as ta
 from sniper.utils import LazyFunc, sleep
 from pyecharts import options as opts
@@ -31,11 +32,22 @@ class Fund:
         fund_cate = fund_cate[['fund_code', 'fund_name', 'fund_type']]
         return fund_cate
 
-    def search(self, name, type_list=[], default_type='C') -> pd.DataFrame:
-        return self.__all_funds[(self.__all_funds.fund_name.str.contains(name)) & (
-            self.__all_funds.fund_type.isin(type_list) if len(type_list) > 0 else True) & (
-                                    self.__all_funds.fund_name.str.contains(
-                                        default_type) if default_type != '' else True)]
+    def search(self, name: Union[str, List], type_list=[], default_type='C') -> pd.DataFrame:
+        if isinstance(name, str):
+            names = [name]
+        elif isinstance(name, list):
+            names = name
+        else:
+            raise ModuleExt("不支持参数类型")
+        df_li = []
+        for name_ in names:
+            df = self.__all_funds[(self.__all_funds.fund_name.str.contains(name_)) & (
+                self.__all_funds.fund_type.isin(type_list) if len(type_list) > 0 else True) & (
+                                       self.__all_funds.fund_name.str.contains(
+                                           default_type) if default_type != '' else True)]
+
+            df_li.append(df)
+        return pd.concat(df_li)
 
     def combine_data(self, start, end, mat: pd.DataFrame, batch=30):
         df_list = []

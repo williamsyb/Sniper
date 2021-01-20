@@ -1,6 +1,9 @@
 import pandas as pd
 import os
+from sqlalchemy import create_engine
 from enum import Enum, unique
+
+ENGINE = create_engine('mysql+pymysql://mysql:123456@node01:3306/sniper')
 
 DATA_PATH = os.path.expanduser('~')
 
@@ -29,10 +32,6 @@ INDUSTRY_ZZ = 'http://www.csindex.com.cn/zh-CN/downloads/industry-price-earnings
 INDUSTRY_ZY = 'http://www.csindex.com.cn/zh-CN/downloads/industry-price-earnings-ratio?type=zy{type_}&date={date}'
 
 
-<<<<<<< HEAD
-=======
-
-
 @unique  # @unique装饰器可以帮助我们检查保证没有重复值
 class RatioName(Enum):
     def __new__(cls, chinese, num):
@@ -45,4 +44,3 @@ class RatioName(Enum):
     TTM_PE = '滚动市盈率', 2
     PB = '市净率', 3
     DIVIDEND_YIELD = '股息率', 4
->>>>>>> f244fae5fdea0e99a9a177a8ab47f2868d80bacb
