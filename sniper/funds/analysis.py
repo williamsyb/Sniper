@@ -91,7 +91,7 @@ class Fund:
             ma40 = round(ma40, 4)
             upper, middle, lower = ta.BBANDS(tmp[column].values, timeperiod=20, nbdevup=2, nbdevdn=2, matype=0)
             c = (
-                Line(init_opts=opts.InitOpts(height="300px", width='100%'))
+                Line(init_opts=opts.InitOpts(height="300px", width='100%', bg_color="white"))
                     .add_xaxis(dates)
                     .add_yaxis(
                     '',
@@ -164,7 +164,13 @@ class Fund:
                                      yaxis_opts=opts.AxisOpts(is_scale=True,
                                                               axistick_opts=opts.AxisTickOpts(is_show=True),
                                                               splitline_opts=opts.SplitLineOpts(is_show=True), ),
-                                     toolbox_opts=opts.ToolboxOpts(),
+                                     toolbox_opts=opts.ToolboxOpts(
+                                        #  feature=opts.ToolBoxFeatureOpts(
+                                        #                            save_as_image=opts.ToolBoxFeatureSaveAsImageOpts(
+                                        #                                 type_="png",
+                                        #                                 background_color='white',
+                                        #                                  pixel_ratio=15))
+                                                                         ),
                                      tooltip_opts=opts.TooltipOpts(trigger="axis", axis_pointer_type="cross"),
                                      datazoom_opts=[opts.DataZoomOpts(range_start=0, range_end=100),
                                                     opts.DataZoomOpts(type_="inside"), ]
