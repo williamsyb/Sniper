@@ -43,8 +43,8 @@ class Fund:
         for name_ in names:
             df = self.__all_funds[(self.__all_funds.fund_name.str.contains(name_)) & (
                 self.__all_funds.fund_type.isin(type_list) if len(type_list) > 0 else True) & (
-                                       self.__all_funds.fund_name.str.contains(
-                                           default_type) if default_type != '' else True)]
+                                      self.__all_funds.fund_name.str.contains(
+                                          default_type) if default_type != '' else True)]
 
             df_li.append(df)
         return pd.concat(df_li)
@@ -75,117 +75,121 @@ class Fund:
         page = Page(layout=Page.DraggablePageLayout)
         dates = [date.strftime('%Y-%m-%d') for date in total_df.index]
         for column in total_df.columns[:]:
-            tmp = total_df[[column]]
-            tmp.fillna(method='bfill', inplace=True)  # 应该用前一天，但是为了画图，这里用了后一天，对总体影响不大
-            ma5 = tmp.rolling(5).mean()
-            ma5.fillna(method='bfill', inplace=True)
-            ma5 = round(ma5, 4)
-            ma10 = tmp.rolling(10).mean()
-            ma10.fillna(method='bfill', inplace=True)
-            ma10 = round(ma10, 4)
-            ma20 = tmp.rolling(20).mean()
-            ma20.fillna(method='bfill', inplace=True)
-            ma20 = round(ma20, 4)
-            ma40 = tmp.rolling(40).mean()
-            ma40.fillna(method='bfill', inplace=True)
-            ma40 = round(ma40, 4)
-            upper, middle, lower = ta.BBANDS(tmp[column].values, timeperiod=20, nbdevup=2, nbdevdn=2, matype=0)
-            c = (
-                Line(init_opts=opts.InitOpts(height="300px", width='100%', bg_color="white"))
-                    .add_xaxis(dates)
-                    .add_yaxis(
-                    '',
-                    tmp.values.tolist(),
-                    is_symbol_show=False,
-                    label_opts=opts.LabelOpts(is_show=False),
-                    linestyle_opts=opts.LineStyleOpts(color="#FF0000", width=2),
-                    markpoint_opts=opts.MarkPointOpts(
-                        data=[opts.MarkPointItem(type_="min"), opts.MarkPointItem(type_="max")])
-                )
-                    .add_yaxis(
-                    '',
-                    upper,
-                    is_symbol_show=False,
-                    label_opts=opts.LabelOpts(is_show=False),
-                    linestyle_opts=opts.LineStyleOpts(color="#404040", width=0.5)
-                    #             markpoint_opts=opts.MarkPointOpts(),
-                )
-                    .add_yaxis(
-                    '',
-                    middle,
-                    is_symbol_show=False,
-                    label_opts=opts.LabelOpts(is_show=False),
-                    linestyle_opts=opts.LineStyleOpts(color="#404040", width=0.5)
-                    #             markpoint_opts=opts.MarkPointOpts(),
-                )
-                    .add_yaxis(
-                    '',
-                    lower,
-                    is_symbol_show=False,
-                    label_opts=opts.LabelOpts(is_show=False),
-                    linestyle_opts=opts.LineStyleOpts(color="#404040", width=0.5)
-                    #             markpoint_opts=opts.MarkPointOpts(),
-                )
-                    .add_yaxis(
-                    "ma5",
-                    ma5.values.tolist(),
-                    symbol="emptyCircle",
-                    is_symbol_show=False,
-                    label_opts=opts.LabelOpts(is_show=False),
-                    linestyle_opts=opts.LineStyleOpts(color="#0000FF", width=1)
-                )
-                    .add_yaxis(
-                    "ma10",
-                    ma10.values.tolist(),
-                    symbol="emptyCircle",
-                    is_symbol_show=False,
-                    label_opts=opts.LabelOpts(is_show=False),
-                    linestyle_opts=opts.LineStyleOpts(color="#000000", width=1)
+            try:
+                tmp = total_df[[column]]
+                tmp.fillna(method='bfill', inplace=True)  # 应该用前一天，但是为了画图，这里用了后一天，对总体影响不大
+                ma5 = tmp.rolling(5).mean()
+                ma5.fillna(method='bfill', inplace=True)
+                ma5 = round(ma5, 4)
+                ma10 = tmp.rolling(10).mean()
+                ma10.fillna(method='bfill', inplace=True)
+                ma10 = round(ma10, 4)
+                ma20 = tmp.rolling(20).mean()
+                ma20.fillna(method='bfill', inplace=True)
+                ma20 = round(ma20, 4)
+                ma40 = tmp.rolling(40).mean()
+                ma40.fillna(method='bfill', inplace=True)
+                ma40 = round(ma40, 4)
+                upper, middle, lower = ta.BBANDS(tmp[column].values, timeperiod=20, nbdevup=2, nbdevdn=2, matype=0)
+                c = (
+                    Line(init_opts=opts.InitOpts(height="300px", width='100%', bg_color="white"))
+                        .add_xaxis(dates)
+                        .add_yaxis(
+                        '',
+                        tmp.values.tolist(),
+                        is_symbol_show=False,
+                        label_opts=opts.LabelOpts(is_show=False),
+                        linestyle_opts=opts.LineStyleOpts(color="#FF0000", width=2),
+                        markpoint_opts=opts.MarkPointOpts(
+                            data=[opts.MarkPointItem(type_="min"), opts.MarkPointItem(type_="max")])
+                    )
+                        .add_yaxis(
+                        '',
+                        upper,
+                        is_symbol_show=False,
+                        label_opts=opts.LabelOpts(is_show=False),
+                        linestyle_opts=opts.LineStyleOpts(color="#404040", width=0.5)
+                        #             markpoint_opts=opts.MarkPointOpts(),
+                    )
+                        .add_yaxis(
+                        '',
+                        middle,
+                        is_symbol_show=False,
+                        label_opts=opts.LabelOpts(is_show=False),
+                        linestyle_opts=opts.LineStyleOpts(color="#404040", width=0.5)
+                        #             markpoint_opts=opts.MarkPointOpts(),
+                    )
+                        .add_yaxis(
+                        '',
+                        lower,
+                        is_symbol_show=False,
+                        label_opts=opts.LabelOpts(is_show=False),
+                        linestyle_opts=opts.LineStyleOpts(color="#404040", width=0.5)
+                        #             markpoint_opts=opts.MarkPointOpts(),
+                    )
+                        .add_yaxis(
+                        "ma5",
+                        ma5.values.tolist(),
+                        symbol="emptyCircle",
+                        is_symbol_show=False,
+                        label_opts=opts.LabelOpts(is_show=False),
+                        linestyle_opts=opts.LineStyleOpts(color="#0000FF", width=1)
+                    )
+                        .add_yaxis(
+                        "ma10",
+                        ma10.values.tolist(),
+                        symbol="emptyCircle",
+                        is_symbol_show=False,
+                        label_opts=opts.LabelOpts(is_show=False),
+                        linestyle_opts=opts.LineStyleOpts(color="#000000", width=1)
 
+                    )
+                        .add_yaxis(
+                        "ma20",
+                        ma20.values.tolist(),
+                        symbol="emptyCircle",
+                        is_symbol_show=False,
+                        label_opts=opts.LabelOpts(is_show=False),
+                        linestyle_opts=opts.LineStyleOpts(color="#006400", width=1)
+                    )
+                        .add_yaxis(
+                        "ma40",
+                        ma40.values.tolist(),
+                        symbol="emptyCircle",
+                        is_symbol_show=False,
+                        label_opts=opts.LabelOpts(is_show=False),
+                        linestyle_opts=opts.LineStyleOpts(color="#800080", width=1)
+                    )
+                        .set_global_opts(title_opts=opts.TitleOpts(title=column),
+                                         xaxis_opts=opts.AxisOpts(is_scale=True),
+                                         yaxis_opts=opts.AxisOpts(is_scale=True,
+                                                                  axistick_opts=opts.AxisTickOpts(is_show=True),
+                                                                  splitline_opts=opts.SplitLineOpts(is_show=True), ),
+                                         toolbox_opts=opts.ToolboxOpts(
+                                             #  feature=opts.ToolBoxFeatureOpts(
+                                             #                            save_as_image=opts.ToolBoxFeatureSaveAsImageOpts(
+                                             #                                 type_="png",
+                                             #                                 background_color='white',
+                                             #                                  pixel_ratio=15))
+                                         ),
+                                         tooltip_opts=opts.TooltipOpts(trigger="axis", axis_pointer_type="cross"),
+                                         datazoom_opts=[opts.DataZoomOpts(range_start=0, range_end=100),
+                                                        opts.DataZoomOpts(type_="inside"), ]
+                                         )
+                        .set_series_opts(
+                        label_opts=opts.LabelOpts(is_show=False),
+                        #             markpoint_opts=opts.MarkPointOpts(
+                        #                 data=[
+                        #                     opts.MarkPointItem(type_="max", name="最大值"),
+                        #                     opts.MarkPointItem(type_="min", name="最小值"),
+                        #                     opts.MarkPointItem(type_="average", name="平均值"),
+                        #                 ]
+                        #             ),
+                    )
                 )
-                    .add_yaxis(
-                    "ma20",
-                    ma20.values.tolist(),
-                    symbol="emptyCircle",
-                    is_symbol_show=False,
-                    label_opts=opts.LabelOpts(is_show=False),
-                    linestyle_opts=opts.LineStyleOpts(color="#006400", width=1)
-                )
-                    .add_yaxis(
-                    "ma40",
-                    ma40.values.tolist(),
-                    symbol="emptyCircle",
-                    is_symbol_show=False,
-                    label_opts=opts.LabelOpts(is_show=False),
-                    linestyle_opts=opts.LineStyleOpts(color="#800080", width=1)
-                )
-                    .set_global_opts(title_opts=opts.TitleOpts(title=column),
-                                     xaxis_opts=opts.AxisOpts(is_scale=True),
-                                     yaxis_opts=opts.AxisOpts(is_scale=True,
-                                                              axistick_opts=opts.AxisTickOpts(is_show=True),
-                                                              splitline_opts=opts.SplitLineOpts(is_show=True), ),
-                                     toolbox_opts=opts.ToolboxOpts(
-                                        #  feature=opts.ToolBoxFeatureOpts(
-                                        #                            save_as_image=opts.ToolBoxFeatureSaveAsImageOpts(
-                                        #                                 type_="png",
-                                        #                                 background_color='white',
-                                        #                                  pixel_ratio=15))
-                                                                         ),
-                                     tooltip_opts=opts.TooltipOpts(trigger="axis", axis_pointer_type="cross"),
-                                     datazoom_opts=[opts.DataZoomOpts(range_start=0, range_end=100),
-                                                    opts.DataZoomOpts(type_="inside"), ]
-                                     )
-                    .set_series_opts(
-                    label_opts=opts.LabelOpts(is_show=False),
-                    #             markpoint_opts=opts.MarkPointOpts(
-                    #                 data=[
-                    #                     opts.MarkPointItem(type_="max", name="最大值"),
-                    #                     opts.MarkPointItem(type_="min", name="最小值"),
-                    #                     opts.MarkPointItem(type_="average", name="平均值"),
-                    #                 ]
-                    #             ),
-                )
-            )
-            page.add(c)
+                page.add(c)
+            except:
+                logger.warning(f'{column}画图失败')
+                continue
         page.render_notebook()
         return page
