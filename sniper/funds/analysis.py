@@ -56,12 +56,15 @@ class Fund:
             fund_code = row['fund_code']
             fund_name = row['fund_name']
             try:
+                # print('fund_code:', fund_code)
                 fund_em_info_df = ak.fund_em_open_fund_info(fund=fund_code)
             except:
                 logger.warning(f'获取 {fund_code}-{fund_name} 失败')
                 continue
+            # print(fund_em_info_df.head())
             fund_em_info_df.rename(columns={'净值日期': 'Date', '单位净值': 'price', '日增长率': 'ret'}, inplace=True)
             fund_em_info_df.Date = pd.to_datetime(fund_em_info_df.Date)
+            # print(fund_em_info_df.head())
             fund_em_info_df.price = fund_em_info_df.price.astype(float)
             fund_em_info_df.set_index('Date', inplace=True)
 
@@ -84,13 +87,13 @@ class Fund:
                 ma10 = tmp.rolling(10).mean()
                 ma10.fillna(method='bfill', inplace=True)
                 ma10 = round(ma10, 4)
-                ma20 = tmp.rolling(20).mean()
-                ma20.fillna(method='bfill', inplace=True)
-                ma20 = round(ma20, 4)
+                ma25 = tmp.rolling(25).mean()
+                ma25.fillna(method='bfill', inplace=True)
+                ma25 = round(ma25, 4)
                 ma40 = tmp.rolling(40).mean()
                 ma40.fillna(method='bfill', inplace=True)
                 ma40 = round(ma40, 4)
-                upper, middle, lower = ta.BBANDS(tmp[column].values, timeperiod=20, nbdevup=2, nbdevdn=2, matype=0)
+                upper, middle, lower = ta.BBANDS(tmp[column].values, timeperiod=25, nbdevup=2, nbdevdn=2, matype=0)
                 c = (
                     Line(init_opts=opts.InitOpts(height="300px", width='100%', bg_color="white"))
                         .add_xaxis(dates)
@@ -145,8 +148,8 @@ class Fund:
 
                     )
                         .add_yaxis(
-                        "ma20",
-                        ma20.values.tolist(),
+                        "ma25",
+                        ma25.values.tolist(),
                         symbol="emptyCircle",
                         is_symbol_show=False,
                         label_opts=opts.LabelOpts(is_show=False),
