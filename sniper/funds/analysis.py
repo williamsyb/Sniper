@@ -195,5 +195,6 @@ class Fund:
             except:
                 logger.warning(f'{column}画图失败')
                 continue
+        page.load_javascript()
         page.render_notebook()
         return page
