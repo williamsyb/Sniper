@@ -72,6 +72,7 @@ class Fund:
             df_list.append(fund_em_info_df[[fund_name]])
         total_df = pd.concat(df_list, axis=1)
         total_df = total_df.loc[start:end, :]
+        total_df.fillna(method='ffill', inplace=True)
         return total_df
 
     def plot(self, total_df):
